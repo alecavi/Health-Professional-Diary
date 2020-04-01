@@ -26,6 +26,7 @@ implements Serializable
 	{
 		this.profession = profession;
 		this.workLocation = workLocation;
+		this.diary = new Diary();
 	}
 	
 	/**
