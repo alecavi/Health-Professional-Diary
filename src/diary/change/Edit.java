@@ -1,5 +1,8 @@
 package diary.change;
 
+import java.time.ZonedDateTime;
+import java.util.Map;
+
 import diary.Entry;
 
 /**
@@ -14,20 +17,22 @@ implements Change
 	private Entry newEntry;
 
 	public Edit(Entry oldEntry, Entry newEntry)
-	{
+	{	
 		this.oldEntry = oldEntry;
 		this.newEntry = newEntry;
 	}
 
 	@Override
-	public void apply()
+	public void apply(Map<ZonedDateTime, Entry> diary)
 	{		
-		
+		diary.remove(oldEntry.getStartTime());
+		diary.put(newEntry.getStartTime(), newEntry);
 	}
 
 	@Override
-	public void undo()
+	public void undo(Map<ZonedDateTime, Entry> diary)
 	{
-
+		diary.remove(newEntry.getStartTime());
+		diary.put(oldEntry.getStartTime(), oldEntry);
 	}
 }
