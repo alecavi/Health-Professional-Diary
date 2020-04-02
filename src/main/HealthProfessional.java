@@ -2,6 +2,8 @@ package main;
 
 import java.io.Serializable;
 
+import diary.Diary;
+
 /**
  * Represents a health professional and stores their diary
  * @author Alessandro Cavicchioli

@@ -1,4 +1,4 @@
-package main;
+package diary;
 
 /**
  * This class is intentionally left empty. It serves as a mockup, to avoid compiler errors while writing code that

@@ -1,34 +1,52 @@
 package diary;
 
-/**
- * 
- * @author Scott
- *
- */
-import java.util.Scanner;
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 
-public class Entry implements Serializable
+/**
+ * 
+ * @author scott
+ *
+ */
+public class Entry 
 {
-	private static final long serialVersionUID = 1L;
-	
-	String info;
 	String date;
 	ZonedDateTime startTime;
 	ZonedDateTime endTime;
 	String treatmentType;
-	Boolean valid = false;
-	
-	Appointment root;
-	Appointment testApp;
-	static Entry testEntry;
-	
-	Scanner s = new Scanner(System.in);
+	String info;
 	
 	public Entry(String date, ZonedDateTime startTime, ZonedDateTime endTime, String treatmentType) 
 	{
-		testApp = new Appointment(date, startTime, endTime, treatmentType);
-		testEntry = new Entry(date, startTime, endTime, treatmentType);
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.treatmentType = treatmentType;
 	}
+	
+    public String getDate()
+    {
+        return date;
+    }
+    
+    public ZonedDateTime getStartTime()
+    {
+        return startTime;
+    }
+    
+    public ZonedDateTime getEndTime()
+    {
+        return endTime;
+    }
+    
+    public String getTreatmentType()
+    {
+        return treatmentType;
+    }
+    
+    public String getInfo() 
+    {
+    	String info= date +" "+ startTime + " " + endTime + " " + treatmentType;
+    	return info;
+    }
+    
 }
