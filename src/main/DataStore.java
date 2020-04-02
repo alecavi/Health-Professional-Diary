@@ -1,9 +1,16 @@
 package main;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DataStore
 implements Serializable
@@ -69,5 +76,14 @@ implements Serializable
 	public Set<Map.Entry<String, HealthProfessional>> entrySet()
 	{
 		return dataStore.entrySet();
+	}
+	
+	
+	private List<HealthProfessional> getProfessionalsInCollection(Collection<String> names)
+	{
+		return dataStore.entrySet().stream()
+			.filter(entry -> names.contains(entry.getKey()))
+			.map(entry -> entry.getValue())
+			.collect(Collectors.toList());
 	}
 }
