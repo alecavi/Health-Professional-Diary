@@ -1,20 +1,20 @@
-package change;
+package diary.change;
 
 import diary.Entry;
 
 /**
- * A change that can be applied to edit an entry and undone to delete it to its previous state
+ * A change that can be applied to delete an entry and undone to restore it
  * @author Alessandro Cavicchioli
  * @version 1.0
  */
-public class Addition 
+public class Deletion 
 implements Change
 {
 	private Entry entry;
 
-	public Addition(Entry newEntry)
+	public Deletion(Entry entry)
 	{
-		this.entry = newEntry;
+		this.entry = entry;
 	}
 
 	@Override

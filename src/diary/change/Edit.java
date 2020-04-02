@@ -1,4 +1,4 @@
-package change;
+package diary.change;
 
 import diary.Entry;
 

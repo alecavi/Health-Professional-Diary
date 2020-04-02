@@ -1,4 +1,4 @@
-package change;
+package diary.change;
 
 /**
  * A change that can be applied and undone
