@@ -7,12 +7,12 @@ import diary.Entry;
  * @author Alessandro Cavicchioli
  * @version 1.0
  */
-public class Delete 
+public class Deletion 
 implements Change
 {
 	private Entry entry;
 
-	public Delete(Entry entry)
+	public Deletion(Entry entry)
 	{
 		this.entry = entry;
 	}

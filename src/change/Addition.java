@@ -7,12 +7,12 @@ import diary.Entry;
  * @author Alessandro Cavicchioli
  * @version 1.0
  */
-public class Add 
+public class Addition 
 implements Change
 {
 	private Entry entry;
 
-	public Add(Entry newEntry)
+	public Addition(Entry newEntry)
 	{
 		this.entry = newEntry;
 	}
