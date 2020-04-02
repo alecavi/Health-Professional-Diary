@@ -9,33 +9,26 @@ import java.time.ZonedDateTime;
  */
 public class Entry 
 {
-	String date;
-	ZonedDateTime startTime;
-	ZonedDateTime endTime;
-	String treatmentType;
-	String info;
+	private String date;
+	private ZonedDateTime startDateTime;
+	private ZonedDateTime endDateTime;
+	private String treatmentType;
 	
-	public Entry(String date, ZonedDateTime startTime, ZonedDateTime endTime, String treatmentType) 
+	public Entry(ZonedDateTime startDateTime, ZonedDateTime endDateTime, String treatmentType) 
 	{
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
         this.treatmentType = treatmentType;
 	}
-	
-    public String getDate()
+    
+    public ZonedDateTime getStartDateTime()
     {
-        return date;
+        return startDateTime;
     }
     
-    public ZonedDateTime getStartTime()
+    public ZonedDateTime getEndDateTime()
     {
-        return startTime;
-    }
-    
-    public ZonedDateTime getEndTime()
-    {
-        return endTime;
+        return endDateTime;
     }
     
     public String getTreatmentType()
@@ -45,7 +38,7 @@ public class Entry
     
     public String getInfo() 
     {
-    	String info= date +" "+ startTime + " " + endTime + " " + treatmentType;
+    	String info= date +" "+ startDateTime + " " + endDateTime + " " + treatmentType;
     	return info;
     }
     

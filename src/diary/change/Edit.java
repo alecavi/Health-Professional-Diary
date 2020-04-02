@@ -24,15 +24,15 @@ implements Change
 
 	@Override
 	public void apply(Map<ZonedDateTime, Entry> diary)
-	{		
-		diary.remove(oldEntry.getStartTime());
-		diary.put(newEntry.getStartTime(), newEntry);
+	{			
+		diary.remove(oldEntry.getStartDateTime());
+		diary.put(newEntry.getStartDateTime(), newEntry);
 	}
 
 	@Override
 	public void undo(Map<ZonedDateTime, Entry> diary)
 	{
-		diary.remove(newEntry.getStartTime());
-		diary.put(oldEntry.getStartTime(), oldEntry);
+		diary.remove(newEntry.getStartDateTime());
+		diary.put(oldEntry.getStartDateTime(), oldEntry);
 	}
 }
