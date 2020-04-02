@@ -1,5 +1,6 @@
 package diary;
 
+import java.time.ZonedDateTime;
 
 /**
  * 
@@ -9,8 +10,8 @@ package diary;
 public class Appointment 
 {
 	String date;
-	double startTime;
-	double endTime;
+	ZonedDateTime startTime;
+	ZonedDateTime endTime;
 	String treatmentType;
 	String info;
 	
@@ -18,12 +19,12 @@ public class Appointment
 	Appointment left;
 	Appointment right;
 	
-	public Appointment(String date ,double startTime ,double endTime ,String treatmentType) 
+	public Appointment(String date, ZonedDateTime startTime, ZonedDateTime endTime, String treatmentType) 
 	{
         this.date = date;
         this.startTime = startTime;
-        this.endTime= endTime;
-        this.treatmentType= treatmentType;
+        this.endTime = endTime;
+        this.treatmentType = treatmentType;
 	}
 	
 	public Appointment getAppointment() 
@@ -36,12 +37,12 @@ public class Appointment
         return date;
     }
     
-    public double getStartTime()
+    public ZonedDateTime getStartTime()
     {
         return startTime;
     }
     
-    public double getEndTime()
+    public ZonedDateTime getEndTime()
     {
         return endTime;
     }
