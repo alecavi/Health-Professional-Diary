@@ -8,7 +8,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import change.Change;
+import diary.change.Addition;
+import diary.change.Change;
+import diary.change.Deletion;
+import diary.change.Edit;
 
 /**
  * @author Scott Maclennan
@@ -25,31 +28,34 @@ public class Diary implements Serializable, Iterable<Entry>
 	
 	public void addEntry(Entry newEntry) 
 	{
-		
-		diary.put(newEntry.getStartTime(), newEntry);
-		
+		Addition addition = new Addition(newEntry);
+		addition.apply(diary);
+		history.push(addition);
 	}
 	
 	public void deleteEntry(Entry entry)
 	{
-		
-		diary.remove(entry.getStartTime());
-		
+		Deletion deletion = new Deletion(entry);
+		deletion.apply(diary);
+		history.push(deletion);
 	}
 	
 	public void editEntry(Entry oldEntry, Entry newEntry)
 	{
-		diary.put(oldEntry.getStartTime(), newEntry);
+		Edit edit = new Edit(oldEntry, newEntry);
+		edit.apply(diary);
+		history.push(edit);
+	}
+	
+	public void undo()
+	{
+		history.pop().undo(diary);
 	}
 	
 	public void getEntryByStartDateTime(ZonedDateTime startTime) 
 	{
-		
-		diary.get(startTime);
-		
+		diary.get(startTime);	
 	}
-	
-	
 	
 	@Override
 	public Iterator<Entry> iterator() 

@@ -1,5 +1,10 @@
 package diary.change;
 
+import java.time.ZonedDateTime;
+import java.util.Map;
+
+import diary.Entry;
+
 /**
  * A change that can be applied and undone
  * @author Alessandro Cavicchioli
@@ -10,10 +15,10 @@ public interface Change
 	/**
 	 * Applies this change, performing the operation
 	 */
-	public void apply();
+	public void apply(Map<ZonedDateTime, Entry> diary);
 	
 	/**
 	 * Undoes this change, restoring the system to its state prior to the operation
 	 */
-	public void undo();
+	public void undo(Map<ZonedDateTime, Entry> diary);
 }
