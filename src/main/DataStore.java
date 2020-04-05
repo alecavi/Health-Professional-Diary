@@ -1,31 +1,42 @@
 package main;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import main.SearchResultsBuilder.TimePeriod;
+
+/**
+ * A data store containing the data of multiple health professionals
+ * @author Alessandro Cavicchioli
+ * @version 1.0
+ */
 public class DataStore
 implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	private Map<String, HealthProfessional> dataStore = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private final SortedMap<String, HealthProfessional> dataStore = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	
+	/**
+	 * Creates an empty dataStore
+	 */
+	public DataStore() {}
 	
 	/**
 	 * Associates {@code entry} to {@code name} in the data store, replacing any previous value
 	 * @param name the name to associate {@code entry} to
 	 * @param entry the entry to set
+	 * @throws NullPointerException if {@code entry} is {@code null} 
 	 */
 	public void setEntry(String name, HealthProfessional entry)
 	{
+		if(entry == null) throw new NullPointerException("Entry may not be null");
 		dataStore.put(name, entry);
 	}
 	
@@ -63,27 +74,79 @@ implements Serializable
 	}
 	
 	/**
-	 * Returns a {@link Set} view of the entries in the data store
-	 * The set is backed by the data store, so changes to the data store are reflected in the set, and vice-versa. 
-	 * If the data store is modified while an iteration over the set is in progress 
-	 * (except through the iterator's own remove operation, or through the setValue operation on an entry 
-	 * returned by the iterator) the results of the iteration are undefined. The set supports element removal, 
-	 * which removes the corresponding entry from the data store, via the {@code Iterator.remove}, {@code Set.remove}, 
-	 * {@code removeAll}, {@code retainAll} and {@code clear} operations. It does not support the {@code add} or
-	 * {@code addAll} operations.
-	 * @return a set view of the entries contained in the data store
+	 * Returns a list of all health professionals in this data store. The list is in the same order as the data store
+	 * itself.
+	 * @return an unmodifiable list of all health professionals in this data store
 	 */
-	public Set<Map.Entry<String, HealthProfessional>> entrySet()
+	public List<HealthProfessional> professionals()
 	{
-		return dataStore.entrySet();
+		return dataStore.values().stream().collect(Collectors.toUnmodifiableList());
 	}
 	
-	
-	private List<HealthProfessional> getProfessionalsInCollection(Collection<String> names)
+	/**
+	 * Returns a list of all health professionals who match {@code filter}. The list is in the same order as
+	 * the dataStore itself.
+	 * @param filter a {@link Predicate} to use as the filter. Only professionals matching the predicate will be in the
+	 * output
+	 * @return an unmodifiable list of all professionals with a name in {@code names}
+	 */
+	public List<HealthProfessional> professionalsFiltered(Predicate<? super HealthProfessional> filter)
 	{
-		return dataStore.entrySet().stream()
-			.filter(entry -> names.contains(entry.getKey()))
-			.map(entry -> entry.getValue())
-			.collect(Collectors.toList());
+		return dataStore.values().stream()
+			.filter(filter)
+			.collect(Collectors.toUnmodifiableList());
+	}
+	
+	/**
+	 * Searches the diaries of all professionals specified by {@code names} between {@code from} and {@code to} and
+	 * returns a {@link SearchResults} instance containing the times when each professionals is available 
+	 * @param names a collection of names to search
+	 * @param from the time and date the search should be started
+	 * @param to the time and date the search should be ended
+	 * @return a {@code SearchResults} instance containing the times when each professional is available
+	 * @implNote For best performance, it is highly advisable for {@code names} to be a set
+	 */
+	public SortedMap<String, List<TimePeriod>> searchForAppointmentTimes(Collection<String> names, ZonedDateTime from, ZonedDateTime to)
+	{
+		SearchResultsBuilder out = new SearchResultsBuilder();
+		
+		for(HealthProfessional professional : professionalsFiltered(prof -> names.contains(prof.getName())))
+		{
+			String name = professional.getName();
+			out.addProfessional(name);
+			
+			ZonedDateTime lastAppointmentEnd = from;
+			for(diary.Entry appointment : professional.getDiary())
+			{
+				if(appointment.getStartDateTime().isBefore(from)) continue;
+				else if(appointment.getStartDateTime().isAfter(to)) break;
+				else
+				{
+					out.addPeriodToProfessional(name, lastAppointmentEnd, appointment.getStartDateTime());
+					lastAppointmentEnd = appointment.getEndDateTime();
+				}
+			}
+			out.addPeriodToProfessional(name, lastAppointmentEnd, to);
+		}
+		return out.getResults();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
