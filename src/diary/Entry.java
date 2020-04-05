@@ -9,7 +9,6 @@ import java.time.ZonedDateTime;
  */
 public class Entry 
 {
-	private String date;
 	private ZonedDateTime startDateTime;
 	private ZonedDateTime endDateTime;
 	private String treatmentType;
@@ -38,8 +37,7 @@ public class Entry
     
     public String getInfo() 
     {
-    	String info= date +" "+ startDateTime + " " + endDateTime + " " + treatmentType;
-    	return info;
+    	return startDateTime + " " + endDateTime + " " + treatmentType;
     }
     
 }
