@@ -5,7 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import diary.change.Addition;
@@ -24,7 +24,7 @@ implements Serializable, Iterable<Entry>
 {
 	private static final long serialVersionUID = 1L;
 	
-	private Map<ZonedDateTime, Entry> diary = new TreeMap<>();
+	private SortedMap<ZonedDateTime, Entry> diary = new TreeMap<>();
 	
 	private static final int HISTORY_LENGTH = 24;
 	private transient Deque<Change> historyDone = new ArrayDeque<>(HISTORY_LENGTH);

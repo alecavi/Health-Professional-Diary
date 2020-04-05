@@ -14,23 +14,42 @@ implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
+	private String name;
 	private String profession;
 	private String workLocation;
-	private Diary diary;
+	private final Diary diary;
 	
 	/**
-	 * Constructs a new HealthProfessional with the specified profession and workLocation, as well as an
+	 * Constructs a new HealthProfessional with the specified name, profession, and work location, as well as an
 	 * empty diary
-	 * @param profession the profession to set
-	 * @param workLocation the work location to set
+	 * @param name the name
+	 * @param profession the profession
+	 * @param workLocation the work location
 	 */
-	public HealthProfessional(String profession, String workLocation)
+	public HealthProfessional(String name, String profession, String workLocation)
 	{
+		this.name = name;
 		this.profession = profession;
 		this.workLocation = workLocation;
 		this.diary = new Diary();
 	}
 	
+	/**
+	 * @return the name
+	 */
+	public String getName()
+	{
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
 	/**
 	 * @return the profession
 	 */
@@ -66,6 +85,4 @@ implements Serializable
 	{
 		return diary;
 	}
-	
-	
 }
