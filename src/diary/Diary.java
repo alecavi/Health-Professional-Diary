@@ -5,7 +5,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -21,7 +20,7 @@ import diary.change.Edit;
  *
  */
 public class Diary 
-implements Serializable, Iterable<Entry>
+implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -125,12 +124,11 @@ implements Serializable, Iterable<Entry>
 	}
 	
 	/**
-	 * Returns an iterator over the entries of this diary
-	 * @return an iterator over the entries of this diary
+	 * Returns a collection view of all diary entries
+	 * @return  collection view of all diary entries
 	 */
-	@Override
-	public Iterator<Entry> iterator() 
+	public Collection<Entry> entries()
 	{
-		return diary.values().iterator();
+		return diary.values();
 	}
 }
