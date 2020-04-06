@@ -99,12 +99,14 @@ implements Serializable
 	
 	/**
 	 * Searches the diaries of all professionals specified by {@code names} between {@code from} and {@code to} and
-	 * returns a {@link SearchResults} instance containing the times when each professionals is available 
+	 * returns the results
 	 * @param names a collection of names to search
 	 * @param from the time and date the search should be started
 	 * @param to the time and date the search should be ended
-	 * @return a {@code SearchResults} instance containing the times when each professional is available
-	 * @implNote For best performance, it is highly advisable for {@code names} to be a set
+	 * @return a sorted map (in lexicographic order) associating each professional's name to a list 
+	 * (in chronological order) of their available times
+	 * @implNote For best performance, it is highly advisable for {@code names} to be a set, or otherwise have a fast
+	 * {@code contains()} method
 	 */
 	public SortedMap<String, List<TimePeriod>> searchForAppointmentTimes(Collection<String> names, ZonedDateTime from, ZonedDateTime to)
 	{
@@ -116,15 +118,10 @@ implements Serializable
 			out.addProfessional(name);
 			
 			ZonedDateTime lastAppointmentEnd = from;
-			for(diary.Entry appointment : professional.getDiary())
+			for(diary.Entry appointment : professional.getDiary().entriesBetween(from, to))
 			{
-				if(appointment.getStartDateTime().isBefore(from)) continue;
-				else if(appointment.getStartDateTime().isAfter(to)) break;
-				else
-				{
-					out.addPeriodToProfessional(name, lastAppointmentEnd, appointment.getStartDateTime());
-					lastAppointmentEnd = appointment.getEndDateTime();
-				}
+				out.addPeriodToProfessional(name, lastAppointmentEnd, appointment.getStartDateTime());
+				lastAppointmentEnd = appointment.getEndDateTime();
 			}
 			out.addPeriodToProfessional(name, lastAppointmentEnd, to);
 		}
