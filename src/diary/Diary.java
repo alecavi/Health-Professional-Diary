@@ -52,8 +52,7 @@ implements Serializable, Iterable<Entry>
 	public void addEntry(Entry entry) 
 	{
 		if(diary.containsKey(entry.getStartDateTime()))
-			throw new DuplicateDateTimeException("An appointment starting at this date and time already exists");
-		
+			throw new DuplicateDateTimeException("An appointment starting at this date and time already exists");	
 		applyChange(new Addition(entry));
 	}
 	
