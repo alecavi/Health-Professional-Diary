@@ -2,7 +2,7 @@ package diary;
 
 /**
  * Thrown to indicate that a diary has been requested to edit a nonexistent entry
- * @author Alessandro Cavicchioli
+ * @author Scott Maclennan
  * @version 1.0
  *
  */

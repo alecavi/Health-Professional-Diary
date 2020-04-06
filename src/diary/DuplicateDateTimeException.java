@@ -2,7 +2,7 @@ package diary;
 
 /**
  * Thrown to indicate that a diary has been passed an appointment datetime that already exists
- * @author Alessandro Cavicchioli
+ * @author Scott Maclennan
  * @version 1.0
  */
 public class DuplicateDateTimeException extends IllegalArgumentException
