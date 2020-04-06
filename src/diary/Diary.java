@@ -92,7 +92,7 @@ implements Serializable, Iterable<Entry>
 	}
 	
 	/**
-	 * Redoes the last operation performed, if any
+	 * Redoes the last undone operation, if any
 	 * @return {@code true} if an operation was redone, {@code false} otherwise
 	 */
 	public boolean redo()
