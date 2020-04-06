@@ -125,7 +125,7 @@ implements Serializable
 	
 	/**
 	 * Returns a collection view of all diary entries
-	 * @return  collection view of all diary entries
+	 * @return a collection view of all diary entries
 	 */
 	public Collection<Entry> entries()
 	{
