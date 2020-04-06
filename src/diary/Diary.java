@@ -3,6 +3,7 @@ package diary;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.SortedMap;
@@ -109,8 +110,19 @@ implements Serializable, Iterable<Entry>
 	 * @param startDateTime the start date and time of the entry
 	 */
 	public void getEntryByStartDateTime(ZonedDateTime startDateTime) 
-	{
+	{	
 		diary.get(startDateTime);	
+	}
+	
+	/**
+	 * Returns a collection view of all diary entries between {@code from} (inclusive) and {@code to} (exclusive)
+	 * @param from the start date and time
+	 * @param to the end date and time
+	 * @return a collection view of all diary entries between {@code from} (inclusive) and {@code to} (exclusive)
+	 */
+	public Collection<Entry> entriesBetween(ZonedDateTime from, ZonedDateTime to)
+	{
+		return diary.subMap(from, to).values();
 	}
 	
 	/**
