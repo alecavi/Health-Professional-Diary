@@ -20,7 +20,6 @@ import java.util.SortedMap;
 
 import datastore.DataStore;
 import datastore.HealthProfessional;
-import datastore.SearchResultsBuilder;
 import datastore.SearchResultsBuilder.TimePeriod;
 import tester.Tester;
 
