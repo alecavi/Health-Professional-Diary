@@ -46,7 +46,7 @@ implements Serializable
 	/**
 	 * Adds {@code entry} to this diary
 	 * @param entry the entry to add
-	 * @throws DuplicateDateTimeException if the entry already exists
+	 * @throws DuplicateDateTimeException if an entry already exists that starts at the same date and time
 	 */
 	public void addEntry(Entry entry) 
 	{
@@ -65,6 +65,15 @@ implements Serializable
 	}
 	
 	/**
+	 * Deletes the entry starting at {@code startDateTime} from this diary
+	 * @param startDateTime the start date and time of the entry to delete
+	 */
+	public void deleteEntry(ZonedDateTime startDateTime)
+	{
+		deleteEntry(diary.get(startDateTime));
+	}
+	
+	/**
 	 * Replaces {@code oldEntry} with {@code newEntry} in this diary
 	 * @param oldEntry the entry to be replaced
 	 * @param newEntry the entry to replace {@code oldEntry} with
@@ -75,6 +84,17 @@ implements Serializable
 		if(! diary.containsKey(oldEntry.getStartDateTime()))
 			throw new MissingEntryException("Cannot edit a nonexistent entry");
 		applyChange(new Edit(oldEntry, newEntry));
+	}
+	
+	/**
+	 * Replaces the entry starting at {@code oldStartDateTime} with {@code newEntry} in this diary
+	 * @param oldStartDateTime the start date and time of the entry to be replaced
+	 * @param newEntry the entry to replace {@code oldEntry} with
+	 * @throws MissingEntryException if {@code oldEntry} is not in this diary
+	 */
+	public void editEntry(ZonedDateTime oldStartDateTime, Entry newEntry)
+	{
+		editEntry(diary.get(oldStartDateTime), newEntry);
 	}
 	
 	/**
@@ -101,6 +121,16 @@ implements Serializable
 		change.apply(diary);
 		historyDone.push(change);
 		return true;
+	}
+	
+	/**
+	 * Returns whether this diary contains an entry that starts at {@code startDateTime}
+	 * @param startDateTime the start date and time to check
+	 * @return {@code true} if this diary contains such an entry, {@code false} otherwise
+	 */
+	public boolean containsEntry(ZonedDateTime startDateTime)
+	{
+		return diary.containsKey(startDateTime);
 	}
 	
 	/**

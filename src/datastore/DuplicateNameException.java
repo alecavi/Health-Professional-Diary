@@ -1,4 +1,4 @@
-package main;
+package datastore;
 
 /**
  * Thrown to indicate that a data store has been passed a key that already exists

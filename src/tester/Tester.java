@@ -1,14 +1,14 @@
 package tester;
 
-import main.DataStore;
-import main.DuplicateNameException;
-import main.HealthProfessional;
+import datastore.DataStore;
+import datastore.DuplicateNameException;
+import datastore.HealthProfessional;
 
 public class Tester
 {
-	private static DataStore dataStore = new DataStore();
+	private DataStore dataStore = new DataStore();
 	
-	public static void main(String[] args)
+	public void test()
 	{
 		HealthProfessional testEntry = new HealthProfessional("John Doe", "Doctor", "Dundee");
 		

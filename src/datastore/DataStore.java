@@ -1,4 +1,4 @@
-package main;
+package datastore;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import main.SearchResultsBuilder.TimePeriod;
+import datastore.SearchResultsBuilder.TimePeriod;
 
 /**
  * A data store containing the data of multiple health professionals
@@ -24,19 +24,18 @@ implements Serializable
 	private final SortedMap<String, HealthProfessional> dataStore = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	
 	/**
-	 * Creates an empty dataStore
-	 */
-	public DataStore() {}
-	
-	/**
-	 * Associates {@code entry} to {@code name} in the data store, replacing any previous value
+	 * Associates {@code entry} to {@code name} in the data store, or throws a {@code DuplicateNameException}
+	 * if the data store already contains an entry associated to that name
 	 * @param name the name to associate {@code entry} to
 	 * @param entry the entry to set
-	 * @throws NullPointerException if {@code entry} is {@code null} 
+	 * @throws DuplicateNameException if the data store already contains an entry associated to {@code name}
 	 */
-	public void setEntry(String name, HealthProfessional entry)
+	public void addEntry(String name, HealthProfessional entry)
 	{
-		if(entry == null) throw new NullPointerException("Entry may not be null");
+		if(dataStore.containsKey(name)) 
+			throw new DuplicateNameException("The datastore already contains the specified name");
+		else if(name == null)
+			throw new NullPointerException("name may not be null");
 		dataStore.put(name, entry);
 	}
 	
@@ -51,26 +50,37 @@ implements Serializable
 	}
 	
 	/**
-	 * Associates {@code entry} to {@code name} in the data store, or throws a {@code DuplicateNameException}
-	 * if the data store already contains an entry associated to that name
-	 * @param name the name to associate {@code entry} to
-	 * @param entry the entry to set
-	 * @throws DuplicateNameExcepion if the data store already contains an entry associated to {@code name}
-	 */
-	public void addEntry(String name, HealthProfessional entry)
-	{
-		if(dataStore.containsKey(name)) 
-			throw new DuplicateNameException("The datastore already contains the specified name");
-		else setEntry(name, entry);
-	}
-	
-	/**
 	 * Removes the entry associated to {@code name} from the data store
 	 * @param name the name whose entry should be removed
 	 */
 	public void deleteEntry(String name)
 	{
 		dataStore.remove(name);
+	}
+
+	/**
+	 * Replaces the entry associated with {@code oldName} with {@code newEntry}
+	 * @param name the name to associate {@code newEntry} to
+	 * @param newEntry the entry to set
+	 * @throws DuplicateNameException if there is already an entry with the same name as {@code newEntry}
+	 * @throws NullPointerException if {@code newEntry} is {@code null} 
+	 */
+	public void editEntry(String oldName, HealthProfessional newEntry)
+	{
+		if(containsProfessional(newEntry.getName())) 
+			throw new DuplicateNameException("The datastore already contains the specified name");
+		deleteEntry(oldName);
+		addEntry(newEntry.getName(), newEntry);
+	}
+	
+	/**
+	 * Returns {@code true} if {@code name} is already in this data store, and {@code false} if it isn't
+	 * @param name the name to check
+	 * @return {@code true} if {@code name} is already in this data store, and {@code false} if it isn't
+	 */
+	public boolean containsProfessional(String name)
+	{
+		return dataStore.containsKey(name);
 	}
 	
 	/**
