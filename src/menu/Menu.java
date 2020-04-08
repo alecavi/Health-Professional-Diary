@@ -156,7 +156,7 @@ public class Menu
 		System.out.println("Enter the work location of the health professional you want to add");
 		String workLocation= scanner.nextLine();
 		
-		dataStore.addEntry(name, new HealthProfessional(name, profession, workLocation));
+		dataStore.addEntry(new HealthProfessional(name, profession, workLocation));
 	}
 	
 	/**

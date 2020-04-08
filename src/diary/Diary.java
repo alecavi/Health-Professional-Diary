@@ -47,6 +47,7 @@ implements Serializable
 	 * Adds {@code entry} to this diary
 	 * @param entry the entry to add
 	 * @throws DuplicateDateTimeException if an entry already exists that starts at the same date and time
+	 * @throws NullPointerException if {@code entry} is null
 	 */
 	public void addEntry(Entry entry) 
 	{

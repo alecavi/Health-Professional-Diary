@@ -61,10 +61,10 @@ public class SearchResultsBuilder
 		
 		/**
 		 * Constructs a new TimePeriod instance with the specified start and end times
-		 * @param start
-		 * @param end
+		 * @param start the start time
+		 * @param end the end time
 		 */
-		private TimePeriod(ZonedDateTime start, ZonedDateTime end)
+		public TimePeriod(ZonedDateTime start, ZonedDateTime end)
 		{
 			this.start = start;
 			this.end = end;

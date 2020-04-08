@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -24,18 +25,20 @@ implements Serializable
 	private final SortedMap<String, HealthProfessional> dataStore = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	
 	/**
-	 * Associates {@code entry} to {@code name} in the data store, or throws a {@code DuplicateNameException}
-	 * if the data store already contains an entry associated to that name
-	 * @param name the name to associate {@code entry} to
+	 * Adds {@code entry} to the data store, or throws a {@code DuplicateNameException}
+	 * if the data store already contains an entry with the same name as {@code entry}
 	 * @param entry the entry to set
+	 * @throws NullPointerException if {@code name} is {@code null}
 	 * @throws DuplicateNameException if the data store already contains an entry associated to {@code name}
 	 */
-	public void addEntry(String name, HealthProfessional entry)
+	public void addEntry(HealthProfessional entry)
 	{
+		String name = entry.getName();
+		
+		Objects.requireNonNull(name, "name may not be null");
+		
 		if(dataStore.containsKey(name)) 
 			throw new DuplicateNameException("The datastore already contains the specified name");
-		else if(name == null)
-			throw new NullPointerException("name may not be null");
 		dataStore.put(name, entry);
 	}
 	
@@ -43,18 +46,24 @@ implements Serializable
 	 * Returns the entry associated with {@code name}
 	 * @param name the name whose entry should be returned
 	 * @return the entry associated with {@code name}
+	 * @throws NullPointerException if {@code name} is {@code null}
 	 */
 	public HealthProfessional getEntry(String name)
 	{
+		Objects.requireNonNull(name, "name may not be null");
 		return dataStore.get(name);
 	}
 	
 	/**
 	 * Removes the entry associated to {@code name} from the data store
 	 * @param name the name whose entry should be removed
+	 * @throws NullPointerException if {@code name} is {@code null}
+	 * @throws MissingNameException if there is no entry with {@code oldName} as its name
 	 */
 	public void deleteEntry(String name)
 	{
+		Objects.requireNonNull(name, "name may not be null");
+		if(! containsProfessional(name)) throw new MissingNameException("The specified entry doesn't exist");
 		dataStore.remove(name);
 	}
 
@@ -62,15 +71,16 @@ implements Serializable
 	 * Replaces the entry associated with {@code oldName} with {@code newEntry}
 	 * @param name the name to associate {@code newEntry} to
 	 * @param newEntry the entry to set
+	 * @throws MissingNameException if there is no entry with {@code oldName} as its name 
 	 * @throws DuplicateNameException if there is already an entry with the same name as {@code newEntry}
-	 * @throws NullPointerException if {@code newEntry} is {@code null} 
+	 * @throws NullPointerException if either parameter is {@code null} 
 	 */
 	public void editEntry(String oldName, HealthProfessional newEntry)
 	{
 		if(containsProfessional(newEntry.getName())) 
 			throw new DuplicateNameException("The datastore already contains the specified name");
 		deleteEntry(oldName);
-		addEntry(newEntry.getName(), newEntry);
+		addEntry(newEntry);
 	}
 	
 	/**

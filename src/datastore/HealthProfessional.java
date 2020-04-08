@@ -1,6 +1,7 @@
 package datastore;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import diary.Diary;
 
@@ -25,9 +26,14 @@ implements Serializable
 	 * @param name the name
 	 * @param profession the profession
 	 * @param workLocation the work location
+	 * @throws NullPointerException if any of the parameters is {@code null}
 	 */
 	public HealthProfessional(String name, String profession, String workLocation)
 	{
+		Objects.requireNonNull(name, "name may not be null");
+		Objects.requireNonNull(profession, "Profession may not be null");
+		Objects.requireNonNull(workLocation, "work location may not be null");
+		
 		this.name = name;
 		this.profession = profession;
 		this.workLocation = workLocation;
