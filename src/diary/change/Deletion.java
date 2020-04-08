@@ -2,6 +2,7 @@ package diary.change;
 
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.Objects;
 
 import diary.Entry;
 
@@ -17,6 +18,7 @@ implements Change
 
 	public Deletion(Entry entry)
 	{
+		Objects.requireNonNull(entry, "aaa");
 		this.entry = entry;
 	}
 

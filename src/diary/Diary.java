@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -57,6 +58,17 @@ implements Serializable
 	}
 	
 	/**
+	 * Returns the entry associated with the specified start date and time
+	 * @param startDateTime the start date and time of the entry
+	 * @throws NullPointerException of {@code startDateTime} is null
+	 */
+	public Entry getEntry(ZonedDateTime startDateTime) 
+	{	
+		Objects.requireNonNull(startDateTime, "start date and time may not be null");
+		return diary.get(startDateTime);	
+	}
+
+	/**
 	 * Deletes {@code entry} from this diary
 	 * @param entry the entry to delete
 	 */
@@ -79,11 +91,20 @@ implements Serializable
 	 * @param oldEntry the entry to be replaced
 	 * @param newEntry the entry to replace {@code oldEntry} with
 	 * @throws MissingEntryException if {@code oldEntry} is not in this diary
+	 * @throws DuplicateDateTimeException if an entry that starts at the same time as {@code newEntry} already exists
+	 * @throws NullPointerException if either parameter is null
 	 */
 	public void editEntry(Entry oldEntry, Entry newEntry)
 	{
+		Objects.requireNonNull(oldEntry, "the entry to replace may not be null");
+		Objects.requireNonNull(newEntry, "the new entry may not be null");
+		
 		if(! diary.containsKey(oldEntry.getStartDateTime()))
-			throw new MissingEntryException("Cannot edit a nonexistent entry");
+				throw new MissingEntryException("Cannot edit a nonexistent entry");
+		else if(diary.containsKey(newEntry.getStartDateTime()))
+			if(! oldEntry.getStartDateTime().equals(newEntry.getStartDateTime()))
+				throw new DuplicateDateTimeException("An entry starting at the same date and time already exists");
+		
 		applyChange(new Edit(oldEntry, newEntry));
 	}
 	
@@ -92,9 +113,13 @@ implements Serializable
 	 * @param oldStartDateTime the start date and time of the entry to be replaced
 	 * @param newEntry the entry to replace {@code oldEntry} with
 	 * @throws MissingEntryException if {@code oldEntry} is not in this diary
+	 * @throws DuplicateDateTimeException if an entry that starts at the same time as {@code newEntry} already exists
+	 * @throws NullPointerException if either parameter is null
 	 */
 	public void editEntry(ZonedDateTime oldStartDateTime, Entry newEntry)
 	{
+		Objects.requireNonNull(oldStartDateTime, "The start date and time may not be null");
+		if(!diary.containsKey(oldStartDateTime)) throw new MissingEntryException("Cannot edit a nonexistent entry");
 		editEntry(diary.get(oldStartDateTime), newEntry);
 	}
 	
@@ -132,15 +157,6 @@ implements Serializable
 	public boolean containsEntry(ZonedDateTime startDateTime)
 	{
 		return diary.containsKey(startDateTime);
-	}
-	
-	/**
-	 * Returns the entry associated with the specified start date and time
-	 * @param startDateTime the start date and time of the entry
-	 */
-	public void getEntryByStartDateTime(ZonedDateTime startDateTime) 
-	{	
-		diary.get(startDateTime);	
 	}
 	
 	/**
