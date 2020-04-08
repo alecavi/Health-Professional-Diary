@@ -130,7 +130,8 @@ implements Serializable
 			ZonedDateTime lastAppointmentEnd = from;
 			for(diary.Entry appointment : professional.getDiary().entriesBetween(from, to))
 			{
-				out.addPeriodToProfessional(name, lastAppointmentEnd, appointment.getStartDateTime());
+				if(!(lastAppointmentEnd == appointment.getStartDateTime()))
+					out.addPeriodToProfessional(name, lastAppointmentEnd, appointment.getStartDateTime());
 				lastAppointmentEnd = appointment.getEndDateTime();
 			}
 			out.addPeriodToProfessional(name, lastAppointmentEnd, to);
